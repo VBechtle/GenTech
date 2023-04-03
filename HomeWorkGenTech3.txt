@@ -3,8 +3,8 @@
  1 уровень сложности: В рамках БД 'platform' напишите следующие запросы
 
 (1) Вывести пользователей, у которых не укан email-адрес
-	select * from users
-	where email is null
+	select user_id, email from users
+	WHERE email='' OR email is NULL
 
 (2) Вывести незаблокированных пользователей из Китая
 	select * from users
@@ -13,14 +13,15 @@
 (3) Вывести стримы, авторы которых заблокированы
 	select * from streams
 	join users on streams.user_id=users.user_id 
-	where is_blocked=true
+	where users.is_blocked=true
 
 (4) Вывести три последних реакции (включая имя_пользователя)
-	select *
-	from reactions
-	join users on reactions.user_id=users.user_id
-	join streams on reactions.stream_id=streams.stream_id
-	limit 3;
+	SELECT
+	reactions.value, users.fullname
+	FROM reactions
+	JOIN users ON reactions.user_id=users.user_id
+	ORDER BY reactions.created_at DESC
+	LIMIT 3;
 
 (5) Вывести пожертвования заблокированных пользователей
 	select * from donations
